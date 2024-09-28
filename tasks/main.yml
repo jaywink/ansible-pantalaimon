@@ -1,0 +1,39 @@
+---
+- name: Ensure user
+  user:
+    name: "{{ pantalaimon_name }}"
+  register: _user
+
+- name: Ensure mjolnir paths
+  file:
+    path: "/data/{{ pantalaimon_name }}"
+    state: directory
+    mode: 0700
+    owner: "{{ pantalaimon_name }}"
+    group: "{{ pantalaimon_name }}"
+
+- name: Template config
+  template:
+    src: pantalaimon.conf
+    dest: "/data/{{ pantalaimon_name }}/pantalaimon.conf"
+    mode: 0600
+    owner: "{{ pantalaimon_name }}"
+    group: "{{ pantalaimon_name }}"
+  register: _config
+
+- name: Pantalaimon container
+  docker_container:
+    state: started
+    name: "{{ pantalaimon_container_name }}"
+    image: "{{ pantalaimon_docker_image }}"
+    restart_policy: "{{ pantalaimon_docker_restart_policy }}"
+    restart: "{{ _config.changed }}"
+    volumes:
+      - "/data/{{ pantalaimon_name }}:/data"
+    log_driver: json-file
+    log_options:
+      max-size: "100m"
+    exposed_ports: "{{ pantalaimon_homeservers | map(attribute='listen_port') | list }}"
+    user: "{{ _user.uid }}"
+    labels: "{{ pantalaimon_container_labels }}"
+    networks: "{{ pantalaimon_docker_networks }}"

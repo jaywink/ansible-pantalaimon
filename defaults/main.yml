@@ -1,0 +1,15 @@
+---
+# Required, no defaults
+#pantalaimon_homeservers:
+#  - name: myhomeserver
+#    url: https://domain.tld
+#    listen_port: "8009"
+
+# Optional
+pantalaimon_container_name: "{{ pantalaimon_name }}"
+pantalaimon_container_labels: {}
+pantalaimon_docker_image: matrixdotorg/pantalaimon:v0.10.5
+pantalaimon_docker_networks: []
+pantalaimon_log_level: Info
+pantalaimon_name: "pantalaimon"
+pantalaimon_docker_restart_policy: unless-stopped

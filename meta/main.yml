@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Jason Robinson
+  description: Deploy a Pantalaimon using Docker.
+
+  issue_tracker_url: https://github.com/jaywink/ansible-pantalaimon/issues
+
+  license: BSD-3-Clause
+
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+      - focal
+
+  galaxy_tags:
+    - pantalaimon
+    - matrix
+    - encryption
+    - e2ee
+
+dependencies: []
